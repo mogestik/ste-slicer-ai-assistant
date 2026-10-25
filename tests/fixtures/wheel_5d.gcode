@@ -1,0 +1,32 @@
+;VERSION:7.10.12
+;PRINTING_MODE:[cylindrical]
+;MINX:-29.5
+;MINY:-29.5
+;MINZ:0.0
+;MAXX:29.5
+;MAXY:29.5
+;MAXZ:25.0
+T0
+M104 S230
+M105
+M109 S230
+M82 ;absolute extrusion mode
+;STE Slicer 5D Gcode
+START
+G1 F200 E15 ;extrude 15 mm of feed stock
+G1 F200 E13.5 ;make retraction
+G92 E0 ;zero the extruded length again
+G56;Move to the first coordinate system
+;LAYER_COUNT
+;LAYER:0
+G0 X0.00 Y-12.50 Z8.20 A90.00 C0.000 F3600
+G1 X0.00 Y-12.50 Z8.20 C30.000 F1200 E1.20000
+G1 C60.000 E2.40000
+G1 C90.000 E3.60000
+G1 C120.000 E4.80000
+;LAYER:1
+G0 Z8.40
+G1 C150.000 E6.00000
+G1 C180.000 E7.20000
+;prefix_end_gcode
+END

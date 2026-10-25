@@ -1,0 +1,223 @@
+{
+  "model": "6. Крыльчатка охлаждения электродвигателя - 3D",
+  "stl": "models/6. Крыльчатка охлаждения электродвигателя - 3D/Крыльчатка охлаждения электродвигателя.STL",
+  "stl_bbox_center": [
+    84.5,
+    11.003,
+    84.5
+  ],
+  "stl_extents": [
+    169.0,
+    22.0,
+    169.0
+  ],
+  "status": "Гипотеза команды по ТЗ, не официальный эталон",
+  "notes": "Плоским торцом кольца (файловый Y=22) на стол: -Y файла вверх (поворот -90° вокруг X). +Y вверх — допустимо (~).",
+  "checks": [
+    {
+      "id": "machine",
+      "kind": "machine",
+      "expect": {
+        "eq": "hte530v5.2.4"
+      },
+      "weight": 3,
+      "confidence": "high",
+      "source": "ТЗ кейса: Stereotech Hybrid 530 V5.2.4"
+    },
+    {
+      "id": "printing_mode",
+      "kind": "setting",
+      "key": "printing_mode",
+      "expect": {
+        "eq": "classic"
+      },
+      "weight": 5,
+      "confidence": "high",
+      "source": "имя папки модели в models/ ('- 3D')"
+    },
+    {
+      "id": "objects",
+      "kind": "object_count",
+      "expect": {
+        "eq": 1
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "одна модель на проект"
+    },
+    {
+      "id": "bottom_on_plate",
+      "kind": "bottom_on_plate",
+      "expect": {
+        "approx": 0.0,
+        "tol": 0.2
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "Cura опускает модель на стол (automatic_drop_down)"
+    },
+    {
+      "id": "inside_volume",
+      "kind": "inside_build_volume",
+      "weight": 2,
+      "confidence": "high",
+      "source": "fdmprinter/steprinter530_v5.2.4: 3D 351x300.3x300 минус полосы; 5D эллипс 351x300.3, H 231.1"
+    },
+    {
+      "id": "material_temp",
+      "kind": "temperature_vs_material",
+      "key": "material_print_temperature",
+      "expect": {
+        "tol": 15
+      },
+      "acceptable": {
+        "tol": 30
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза: эталон держит температуру материала (±15 °C)"
+    },
+    {
+      "id": "material",
+      "kind": "material",
+      "extruder": "0",
+      "expect": {
+        "one_of": [
+          "enduse_pa6"
+        ]
+      },
+      "acceptable": {
+        "one_of": [
+          "fiberpart_pa12_g12",
+          "enduse_pp",
+          "enduse_petg",
+          "fiberpart_pp_g30",
+          "enduse_abs"
+        ]
+      },
+      "weight": 4,
+      "confidence": "medium",
+      "source": "профили качества STE Slicer для H530"
+    },
+    {
+      "id": "quality",
+      "kind": "quality_type",
+      "expect": {
+        "one_of": [
+          "draft",
+          "fast"
+        ]
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза по слою из разбор геометрии модели",
+      "acceptable": {
+        "one_of": [
+          "normal"
+        ]
+      }
+    },
+    {
+      "id": "layer_height",
+      "kind": "setting",
+      "key": "layer_height",
+      "where": "auto",
+      "expect": {
+        "min": 0.15,
+        "max": 0.2
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 0.1,
+        "max": 0.3
+      }
+    },
+    {
+      "id": "wall_line_count",
+      "kind": "setting",
+      "key": "wall_line_count",
+      "where": "auto",
+      "expect": {
+        "min": 3,
+        "max": 5
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 2,
+        "max": 8
+      }
+    },
+    {
+      "id": "infill_sparse_density",
+      "kind": "setting",
+      "key": "infill_sparse_density",
+      "where": "auto",
+      "expect": {
+        "min": 80
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели: тонкостенная, 100%",
+      "acceptable": {
+        "min": 20
+      }
+    },
+    {
+      "id": "support_enable",
+      "kind": "setting",
+      "key": "support_enable",
+      "where": "auto",
+      "expect": {
+        "eq": true
+      },
+      "weight": 2,
+      "confidence": "medium",
+      "source": "геометрия модели (analyze_model): свесы 6.3k мм² под лопастями"
+    },
+    {
+      "id": "orientation",
+      "kind": "up_axis",
+      "expect": {
+        "axis": "-Y",
+        "tol_deg": 5
+      },
+      "weight": 4,
+      "confidence": "high",
+      "source": "пересчёт по STL (suggest_orientation, проверено площадью граней): плоский торец кольца лежит на файловом Y=22 (7508 мм² граней с нормалью +Y) -> он на стол = -Y файла вверх, свесы 6375 мм²; +Y вверх даёт контакт 1891 мм² и свесы 11887 мм². разбор геометрии модели перепутал знак («Y=0 вниз», но с контактом 7500 мм²)",
+      "acceptable": {
+        "any_of": [
+          "+Y"
+        ],
+        "tol_deg": 5
+      }
+    },
+    {
+      "id": "height_z",
+      "kind": "dimensions",
+      "expect": {
+        "size_z": 22.0,
+        "tol": 0.3
+      },
+      "weight": 2,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model) (габариты STL) + выбранная ориентация"
+    },
+    {
+      "id": "center_xy",
+      "kind": "center_xy",
+      "expect": {
+        "max_mm": 5
+      },
+      "acceptable": {
+        "max_mm": 60
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "Cura ставит модель в центр стола; эталон, вероятно, тоже по центру"
+    }
+  ]
+}

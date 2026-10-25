@@ -1,0 +1,84 @@
+{
+ "_about": "Стартовые наборы ключевых настроек для типовых задач (Stereotech Hybrid 530 V5.2.4, сопло 0.4). Ключи — точные ключи STE Slicer (fdmprinter.def.json). Значения — инженерная оценка команды (эвристики Cura/Prusa + РЭ Stereotech), не данные производителя; требуют пробной печати. Температуры, обдув и ретракт НЕ задаются здесь: они приходят из профиля материала. Порядок применения: set_print_mode -> set_material -> select_profile(quality) -> set_settings(settings).",
+ "quality_types": {
+  "high": {"label": "Extra Fine", "layer_height": 0.06},
+  "normal": {"label": "Fine", "layer_height": 0.1, "note": "по умолчанию в слайсере; в UI «Fine»"},
+  "fast": {"label": "Normal", "layer_height": 0.15, "note": "в UI «Normal» (не путать с quality_type normal = «Fine»); профиль сам ставит infill_sparse_density 10 и wall_thickness 1 — перекрой их настройками пресета"},
+  "draft": {"label": "Draft", "layer_height": 0.2},
+  "verydraft": {"label": "Extra Fast", "layer_height": 0.3, "note": "на пределе для сопла 0.4 (макс. 0.32)"}
+ },
+ "five_d_rules": {
+  "infill_patterns_allowed": ["lines", "grid", "concentric"],
+  "do_not_set": ["adhesion_type", "cylindrical_raft_type", "material_bed_temperature", "brim_width"],
+  "why": "В 5D адгезия идёт формулами профиля (raft/спиральная подложка в cylindrical_full), стол не греется, glicer понимает только lines/grid/concentric."
+ },
+ "presets": {
+  "functional_load": {
+   "title": "Функциональная деталь под нагрузкой",
+   "quality_type": "fast",
+   "settings": {"wall_line_count": 4, "top_bottom_thickness": 1.2, "infill_sparse_density": 40, "infill_pattern": "gyroid", "adhesion_type": "brim", "brim_width": 5},
+   "speed_cap": 50,
+   "why": "Прочность дают в первую очередь ориентация (нагрузка вдоль слоёв) и число стенок, затем заполнение; выше ~40-50% прирост мал.",
+   "notes": ["Поддержки включай по результату анализа свесов (needs_support выбранной позы), а не по умолчанию.", "Мелкую нагруженную деталь (объём < 20 см³) печатай с 100% заполнением — разница во времени мала, сечение сплошное.", "Тонкостенность: средняя толщина стенки ≈ 20·volume_cm3/surface_cm2 мм (из analyze_model). ≤ 2.5 мм — тонкостенная: infill_sparse_density 100, wall_line_count = round(толщина/0.4)."]
+  },
+  "flexible": {
+   "title": "Гибкая / эластичная деталь (TPU, TPE, TPV)",
+   "quality_type": "draft",
+   "settings": {"wall_line_count": 3, "top_bottom_thickness": 1.0, "infill_sparse_density": 30, "infill_pattern": "gyroid", "retraction_hop_enabled": false, "adhesion_type": "skirt"},
+   "speed_cap": 25,
+   "why": "Эластичный пруток печатают медленно (20-30 мм/с), с минимальным ретрактом и без Z-hop, иначе он сминается в подаче.",
+   "notes": ["Тонкостенную оболочку (стенка ≤ 2.5 мм; оценка ≈ 20·volume_cm3/surface_cm2 мм) печатай целиком периметрами: wall_line_count = round(толщина/0.4), infill_sparse_density 100.", "Мягкие Sealant только на основном экструдере; при Shore < A90 подавать мимо датчика филамента (РЭ с.25)."]
+  },
+  "decorative": {
+   "title": "Декоративная деталь, внешний вид",
+   "quality_type": "normal",
+   "settings": {"wall_line_count": 3, "top_bottom_thickness": 1.0, "infill_sparse_density": 15, "infill_pattern": "gyroid", "speed_wall_0": 25, "z_seam_type": "sharpest_corner", "support_tree_enable": true, "adhesion_type": "brim", "brim_width": 5},
+   "speed_cap": 40,
+   "why": "Тонкий слой и медленная внешняя стенка уменьшают видимость слоёв; древовидные поддержки оставляют меньше следов; шов прячется в острых углах.",
+   "notes": ["Поддержки включай только если анализ геометрии показал свесы; для фигурок обычно да.", "Полностью невидимых слоёв FDM не даёт: нужна постобработка (шлифовка, грунт, лак)."]
+  },
+  "precise_fit": {
+   "title": "Точная посадка / точный профиль",
+   "quality_type": "normal",
+   "quality_type_by_mode": {"cylindrical": "fast"},
+   "quality_note_by_mode": {"cylindrical": "5D Spiral: посадочное отверстие формирует оснастка, а цилиндрические поверхности — сами слои, поэтому тонкий слой точность не повышает: профиль не тоньше fast (0.15). Нужна гладкость некруглого профиля (кулачок) — выбери normal вручную."},
+   "settings": {"wall_line_count": 4, "top_bottom_thickness": 1.0, "infill_sparse_density": 40, "infill_pattern": "grid", "speed_wall_0": 20, "outer_inset_first": true, "z_seam_type": "back"},
+   "speed_cap": 40,
+   "why": "Тонкий слой, медленная внешняя стенка, внешний периметр первым — точнее контур; отверстия формируются периметрами.",
+   "notes": ["xy_offset (горизонтальное расширение) меняет и внешние контуры, и отверстия — без пробной печати не трогай, предложи пользователю калибровку.", "Допуск ±0.1-0.15 мм FDM гарантирует только с механообработкой."]
+  },
+  "chemical": {
+   "title": "Химстойкая / работающая в среде деталь",
+   "quality_type": "fast",
+   "settings": {"wall_line_count": 4, "top_bottom_thickness": 1.2, "infill_sparse_density": 50, "infill_pattern": "gyroid", "adhesion_type": "brim", "brim_width": 5},
+   "speed_cap": 45,
+   "why": "Толстая сплошная оболочка (стенки, верх/низ) защищает от проникновения среды между слоями.",
+   "notes": ["Стойкость в конкретной среде и при рабочей температуре требует испытаний."]
+  },
+  "heat_resistant": {
+   "title": "Термостойкая деталь",
+   "quality_type": "fast",
+   "settings": {"wall_line_count": 4, "top_bottom_thickness": 1.2, "infill_sparse_density": 40, "infill_pattern": "gyroid", "adhesion_type": "brim", "brim_width": 8},
+   "speed_cap": 45,
+   "why": "Термостойкие материалы (PC, PA, наполненные) дают усадку: кайма против отрыва углов; обдув выключен профилем материала.",
+   "notes": ["Печатать с закрытой камерой; деталь снимать после остывания стола ниже 40 °C (РЭ с.6)."]
+  },
+  "rotation_5d": {
+   "title": "Тело вращения в 5D (cylindrical_full / cylindrical)",
+   "quality_type": "fast",
+   "settings": {"wall_line_count": 4, "top_bottom_thickness": 1.2, "infill_sparse_density": 40, "infill_pattern": "grid", "support_enable": false},
+   "speed_cap": 40,
+   "why": "Цилиндрические слои идут по окружности детали: прочность вдоль окружности, без ступенек на цилиндрических поверхностях, почти без поддержек.",
+   "notes": ["cylindrical_mode_base_diameter — из recommend_print_mode/analyze_model (settings). 5D Spiral: = диаметр осевого отверстия (= оснастка). 5D: 6 (штатный пруток); не больше наименьшего диаметра осевого отверстия.", "Деталь: ось вращения вертикально, центр оси в (0,0).", "Адгезия на оснастке: малярный скотч (+ клей по толщине), см. профиль материала."]
+  },
+  "prototype": {
+   "title": "Быстрый прототип / черновик",
+   "quality_type": "draft",
+   "settings": {"wall_line_count": 2, "top_bottom_thickness": 0.8, "infill_sparse_density": 15, "infill_pattern": "grid", "adhesion_type": "skirt"},
+   "speed_cap": 60,
+   "why": "Минимум времени и материала для проверки формы.",
+   "notes": []
+  }
+ },
+ "merge_rule": "Если задач несколько (например, нагрузка + точность), берётся самый тонкий слой, максимум стенок/верх-низ/заполнения, минимальный speed_cap; булевы включения объединяются по ИЛИ."
+}

@@ -1,0 +1,265 @@
+{
+  "model": "5. Рабочее колесо насоса Wilo - 5D",
+  "stl": "models/5. Рабочее колесо насоса Wilo - 5D/Рабочее_колесо насоса Wilo IPL 80140-42. 2063106.STL",
+  "stl_bbox_center": [
+    -102.704,
+    25.184,
+    76.311
+  ],
+  "stl_extents": [
+    134.64,
+    50.735,
+    134.646
+  ],
+  "status": "Гипотеза команды по ТЗ, не официальный эталон",
+  "notes": "Ось Y файла -> вертикаль, центр на оси вращения. Сторона вверх — вопрос (~ для -Y). Base Diameter 6 (штатный пруток, сердечник целиком в отверстии Ø8) или 8 — вопрос эксперту.",
+  "checks": [
+    {
+      "id": "machine",
+      "kind": "machine",
+      "expect": {
+        "eq": "hte530v5.2.4"
+      },
+      "weight": 3,
+      "confidence": "high",
+      "source": "ТЗ кейса: Stereotech Hybrid 530 V5.2.4"
+    },
+    {
+      "id": "printing_mode",
+      "kind": "setting",
+      "key": "printing_mode",
+      "expect": {
+        "eq": "cylindrical_full"
+      },
+      "weight": 5,
+      "confidence": "medium",
+      "source": "имя папки модели в models/ ('- 5D') + разбор геометрии модели: ступица сплошная -> Spiral Full",
+      "acceptable": {
+        "one_of": [
+          "cylindrical"
+        ]
+      }
+    },
+    {
+      "id": "objects",
+      "kind": "object_count",
+      "expect": {
+        "eq": 1
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "одна модель на проект"
+    },
+    {
+      "id": "bottom_on_plate",
+      "kind": "bottom_on_plate",
+      "expect": {
+        "approx": 0.0,
+        "tol": 0.2
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "Cura опускает модель на стол (automatic_drop_down)"
+    },
+    {
+      "id": "inside_volume",
+      "kind": "inside_build_volume",
+      "weight": 2,
+      "confidence": "high",
+      "source": "fdmprinter/steprinter530_v5.2.4: 3D 351x300.3x300 минус полосы; 5D эллипс 351x300.3, H 231.1"
+    },
+    {
+      "id": "material_temp",
+      "kind": "temperature_vs_material",
+      "key": "material_print_temperature",
+      "expect": {
+        "tol": 15
+      },
+      "acceptable": {
+        "tol": 30
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза: эталон держит температуру материала (±15 °C)"
+    },
+    {
+      "id": "material",
+      "kind": "material",
+      "extruder": "0",
+      "expect": {
+        "one_of": [
+          "fiberpart_pp_g30"
+        ]
+      },
+      "acceptable": {
+        "one_of": [
+          "enduse_pp",
+          "fiberpart_pa12_g12",
+          "fiberpart_pc_g20",
+          "enduse_pc",
+          "fiberpart_abspa_g8"
+        ]
+      },
+      "weight": 4,
+      "confidence": "low",
+      "source": "профили качества STE Slicer для H530"
+    },
+    {
+      "id": "quality",
+      "kind": "quality_type",
+      "expect": {
+        "one_of": [
+          "draft",
+          "fast"
+        ]
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза по слою из разбор геометрии модели",
+      "acceptable": {
+        "one_of": [
+          "normal"
+        ]
+      }
+    },
+    {
+      "id": "cylindrical_mode_base_diameter",
+      "kind": "setting",
+      "key": "cylindrical_mode_base_diameter",
+      "where": "global",
+      "expect": {
+        "min": 6,
+        "max": 8
+      },
+      "weight": 2,
+      "confidence": "low",
+      "source": "analyze_model: наименьший диаметр осевого отверстия Ø8.0 (буртик ступицы, 17% длины), разбор геометрии модели: сердечник 6-8; 5D Full: Base Diameter > Ø8 уводит стенку отверстия в плоские слои сердечника, 14 (по лыскам) — только acceptable. Вопрос эксперту: 6 (штатный пруток) или 8 (= отверстие)",
+      "acceptable": {
+        "min": 4,
+        "max": 17
+      }
+    },
+    {
+      "id": "layer_height",
+      "kind": "setting",
+      "key": "layer_height",
+      "where": "auto",
+      "expect": {
+        "min": 0.15,
+        "max": 0.25
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 0.1,
+        "max": 0.3
+      }
+    },
+    {
+      "id": "wall_line_count",
+      "kind": "setting",
+      "key": "wall_line_count",
+      "where": "auto",
+      "expect": {
+        "min": 4,
+        "max": 6
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 2,
+        "max": 8
+      }
+    },
+    {
+      "id": "support_enable",
+      "kind": "setting",
+      "key": "support_enable",
+      "where": "auto",
+      "expect": {
+        "eq": false
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "eq": true
+      }
+    },
+    {
+      "id": "cylindrical_raft_type",
+      "kind": "setting",
+      "key": "cylindrical_raft_type",
+      "where": "global",
+      "expect": {
+        "eq": "solid"
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "формула fdmprinter для cylindrical_full",
+      "acceptable": {
+        "one_of": [
+          "continuous",
+          "gapped"
+        ]
+      }
+    },
+    {
+      "id": "orientation",
+      "kind": "up_axis",
+      "expect": {
+        "axis": "+Y",
+        "tol_deg": 5
+      },
+      "weight": 4,
+      "confidence": "medium",
+      "source": "геометрия модели (analyze_model) suggested_rotation_for_print",
+      "acceptable": {
+        "any_of": [
+          "-Y"
+        ],
+        "tol_deg": 5
+      }
+    },
+    {
+      "id": "axis_on_rotation_axis",
+      "kind": "axis_on_rotation_axis",
+      "axis_stl": {
+        "point": [
+          -102.704,
+          25.184,
+          76.311
+        ],
+        "dir": [
+          0,
+          1,
+          0
+        ]
+      },
+      "expect": {
+        "max_offset_mm": 0.5,
+        "max_angle_deg": 1.0
+      },
+      "acceptable": {
+        "max_offset_mm": 3.0,
+        "max_angle_deg": 5.0
+      },
+      "weight": 5,
+      "confidence": "medium",
+      "source": "устройство режимов 5D в STE Slicer: в 5D ось детали = вертикальная ось через центр стола; ось из геометрия модели (analyze_model)"
+    },
+    {
+      "id": "height_z",
+      "kind": "dimensions",
+      "expect": {
+        "size_z": 50.7,
+        "tol": 0.5
+      },
+      "weight": 2,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model) (габариты STL) + выбранная ориентация"
+    }
+  ]
+}

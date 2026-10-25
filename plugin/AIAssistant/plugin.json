@@ -1,0 +1,8 @@
+{
+    "name": "AI Assistant",
+    "author": "Команда AI Assistant",
+    "version": "1.0.0",
+    "description": "Чат-ассистент на LLM для STE Slicer: панель чата, агент с инструментами слайсера и MCP-сервер",
+    "api": 5,
+    "i18n-catalog": "steslicer"
+}

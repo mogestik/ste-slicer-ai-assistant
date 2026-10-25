@@ -1,0 +1,246 @@
+{
+  "model": "1. Шестерня - 3D",
+  "stl": "models/1. Шестерня - 3D/Шестерня.stl",
+  "stl_bbox_center": [
+    0.0,
+    5.05,
+    0.0
+  ],
+  "stl_extents": [
+    33.099,
+    10.1,
+    33.099
+  ],
+  "status": "Гипотеза команды по ТЗ, не официальный эталон",
+  "notes": "Диск на столе, ступица вверх (+90° вокруг X: STL +Y -> Z принтера). Материал: в ТЗ УФ/влага/Tg>=85 -> PC G20 / ABSPA G8 (ASA в библиотеке H530 нет).",
+  "checks": [
+    {
+      "id": "machine",
+      "kind": "machine",
+      "expect": {
+        "eq": "hte530v5.2.4"
+      },
+      "weight": 3,
+      "confidence": "high",
+      "source": "ТЗ кейса: Stereotech Hybrid 530 V5.2.4"
+    },
+    {
+      "id": "printing_mode",
+      "kind": "setting",
+      "key": "printing_mode",
+      "expect": {
+        "eq": "classic"
+      },
+      "weight": 5,
+      "confidence": "high",
+      "source": "имя папки модели в models/ ('- 3D')"
+    },
+    {
+      "id": "objects",
+      "kind": "object_count",
+      "expect": {
+        "eq": 1
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "одна модель на проект"
+    },
+    {
+      "id": "bottom_on_plate",
+      "kind": "bottom_on_plate",
+      "expect": {
+        "approx": 0.0,
+        "tol": 0.2
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "Cura опускает модель на стол (automatic_drop_down)"
+    },
+    {
+      "id": "inside_volume",
+      "kind": "inside_build_volume",
+      "weight": 2,
+      "confidence": "high",
+      "source": "fdmprinter/steprinter530_v5.2.4: 3D 351x300.3x300 минус полосы; 5D эллипс 351x300.3, H 231.1"
+    },
+    {
+      "id": "material_temp",
+      "kind": "temperature_vs_material",
+      "key": "material_print_temperature",
+      "expect": {
+        "tol": 15
+      },
+      "acceptable": {
+        "tol": 30
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза: эталон держит температуру материала (±15 °C)"
+    },
+    {
+      "id": "material",
+      "kind": "material",
+      "extruder": "0",
+      "expect": {
+        "one_of": [
+          "fiberpart_pc_g20",
+          "fiberpart_abspa_g8"
+        ]
+      },
+      "acceptable": {
+        "one_of": [
+          "enduse_pc",
+          "fiberpart_abs_g13",
+          "fiberpart_abs_g4",
+          "enduse_abs",
+          "fiberpart_pa12_g12"
+        ]
+      },
+      "weight": 4,
+      "confidence": "low",
+      "source": "профили качества STE Slicer для H530"
+    },
+    {
+      "id": "quality",
+      "kind": "quality_type",
+      "expect": {
+        "one_of": [
+          "normal",
+          "fast"
+        ]
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза по слою из разбор геометрии модели",
+      "acceptable": {
+        "one_of": [
+          "high",
+          "draft"
+        ]
+      }
+    },
+    {
+      "id": "layer_height",
+      "kind": "setting",
+      "key": "layer_height",
+      "where": "auto",
+      "expect": {
+        "min": 0.1,
+        "max": 0.15
+      },
+      "weight": 2,
+      "confidence": "medium",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 0.06,
+        "max": 0.2
+      }
+    },
+    {
+      "id": "infill_sparse_density",
+      "kind": "setting",
+      "key": "infill_sparse_density",
+      "where": "auto",
+      "expect": {
+        "min": 80
+      },
+      "weight": 2,
+      "confidence": "medium",
+      "source": "разбор геометрии модели: деталь крошечная, 100%",
+      "acceptable": {
+        "min": 40
+      }
+    },
+    {
+      "id": "wall_line_count",
+      "kind": "setting",
+      "key": "wall_line_count",
+      "where": "auto",
+      "expect": {
+        "min": 3,
+        "max": 5
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 2,
+        "max": 8
+      }
+    },
+    {
+      "id": "support_enable",
+      "kind": "setting",
+      "key": "support_enable",
+      "where": "auto",
+      "expect": {
+        "eq": false
+      },
+      "weight": 3,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model): свесов 0 при диске на столе"
+    },
+    {
+      "id": "adhesion_type",
+      "kind": "setting",
+      "key": "adhesion_type",
+      "where": "auto",
+      "expect": {
+        "one_of": [
+          "brim",
+          "skirt"
+        ]
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "one_of": [
+          "raft",
+          "none"
+        ]
+      }
+    },
+    {
+      "id": "orientation",
+      "kind": "up_axis",
+      "expect": {
+        "axis": "+Y",
+        "tol_deg": 5
+      },
+      "weight": 4,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model) suggested_rotation_for_print",
+      "acceptable": {
+        "any_of": [
+          "-Y"
+        ],
+        "tol_deg": 5
+      }
+    },
+    {
+      "id": "height_z",
+      "kind": "dimensions",
+      "expect": {
+        "size_z": 10.1,
+        "tol": 0.3
+      },
+      "weight": 2,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model) (габариты STL) + выбранная ориентация"
+    },
+    {
+      "id": "center_xy",
+      "kind": "center_xy",
+      "expect": {
+        "max_mm": 5
+      },
+      "acceptable": {
+        "max_mm": 60
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "Cura ставит модель в центр стола; эталон, вероятно, тоже по центру"
+    }
+  ]
+}

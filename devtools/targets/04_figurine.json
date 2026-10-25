@@ -1,0 +1,237 @@
+{
+  "model": "4. Фигурка",
+  "stl": "models/4. Фигурка/Декоративная фигурка.stl",
+  "stl_bbox_center": [
+    -30.384,
+    15.471,
+    34.926
+  ],
+  "stl_extents": [
+    103.292,
+    128.751,
+    149.979
+  ],
+  "status": "Гипотеза команды по ТЗ, не официальный эталон",
+  "notes": "Как в файле (Z вверх). Для партии 15 шт эталон мог разместить несколько копий — тогда object_count даст ✗, это ожидаемо обсудить.",
+  "checks": [
+    {
+      "id": "machine",
+      "kind": "machine",
+      "expect": {
+        "eq": "hte530v5.2.4"
+      },
+      "weight": 3,
+      "confidence": "high",
+      "source": "ТЗ кейса: Stereotech Hybrid 530 V5.2.4"
+    },
+    {
+      "id": "printing_mode",
+      "kind": "setting",
+      "key": "printing_mode",
+      "expect": {
+        "eq": "classic"
+      },
+      "weight": 5,
+      "confidence": "medium",
+      "source": "разбор геометрии модели: не тело вращения -> 3D (в папке режим не указан)"
+    },
+    {
+      "id": "objects",
+      "kind": "object_count",
+      "expect": {
+        "eq": 1
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "одна модель на проект"
+    },
+    {
+      "id": "bottom_on_plate",
+      "kind": "bottom_on_plate",
+      "expect": {
+        "approx": 0.0,
+        "tol": 0.2
+      },
+      "weight": 1,
+      "confidence": "high",
+      "source": "Cura опускает модель на стол (automatic_drop_down)"
+    },
+    {
+      "id": "inside_volume",
+      "kind": "inside_build_volume",
+      "weight": 2,
+      "confidence": "high",
+      "source": "fdmprinter/steprinter530_v5.2.4: 3D 351x300.3x300 минус полосы; 5D эллипс 351x300.3, H 231.1"
+    },
+    {
+      "id": "material_temp",
+      "kind": "temperature_vs_material",
+      "key": "material_print_temperature",
+      "expect": {
+        "tol": 15
+      },
+      "acceptable": {
+        "tol": 30
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза: эталон держит температуру материала (±15 °C)"
+    },
+    {
+      "id": "material",
+      "kind": "material",
+      "extruder": "0",
+      "expect": {
+        "one_of": [
+          "enduse_petg",
+          "fiberpart_abspa_g8"
+        ]
+      },
+      "acceptable": {
+        "one_of": [
+          "generic_petg_175",
+          "generic_cpe_175",
+          "enduse_abs",
+          "enduse_pc",
+          "proto_pla",
+          "generic_pla_175",
+          "enduse_tpu_d70"
+        ]
+      },
+      "weight": 4,
+      "confidence": "low",
+      "source": "ТЗ §3 вязкость + УФ (не желтеть), §2 до +60 °C; обзор материалов №4 и разбор геометрии модели: ASA (нет в H530 -> ближайший УФ-стойкий аналог fiberpart_abspa_g8) или PETG; PLA отклонён обоими анализами (Tg ~60 = верх рабочего диапазона, слабая УФ) -> proto_pla из expect в acceptable (было: профили качества STE Slicer для H530 petg/pla)"
+    },
+    {
+      "id": "quality",
+      "kind": "quality_type",
+      "expect": {
+        "one_of": [
+          "high",
+          "normal"
+        ]
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "гипотеза по слою из разбор геометрии модели",
+      "acceptable": {
+        "one_of": [
+          "fast"
+        ]
+      }
+    },
+    {
+      "id": "layer_height",
+      "kind": "setting",
+      "key": "layer_height",
+      "where": "auto",
+      "expect": {
+        "min": 0.06,
+        "max": 0.12
+      },
+      "weight": 2,
+      "confidence": "medium",
+      "source": "ТЗ: без видимых слоёв",
+      "acceptable": {
+        "min": 0.06,
+        "max": 0.15
+      }
+    },
+    {
+      "id": "infill_sparse_density",
+      "kind": "setting",
+      "key": "infill_sparse_density",
+      "where": "auto",
+      "expect": {
+        "min": 8,
+        "max": 20
+      },
+      "weight": 2,
+      "confidence": "medium",
+      "source": "разбор геометрии модели: сплошная 726 см³ -> разреженное заполнение",
+      "acceptable": {
+        "min": 5,
+        "max": 30
+      }
+    },
+    {
+      "id": "wall_line_count",
+      "kind": "setting",
+      "key": "wall_line_count",
+      "where": "auto",
+      "expect": {
+        "min": 2,
+        "max": 3
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "разбор геометрии модели",
+      "acceptable": {
+        "min": 1,
+        "max": 5
+      }
+    },
+    {
+      "id": "support_enable",
+      "kind": "setting",
+      "key": "support_enable",
+      "where": "auto",
+      "expect": {
+        "eq": true
+      },
+      "weight": 2,
+      "confidence": "medium",
+      "source": "геометрия модели (analyze_model): свесы 4.3k мм² (руки, уши, хвост)"
+    },
+    {
+      "id": "support_tree_enable",
+      "kind": "setting",
+      "key": "support_tree_enable",
+      "where": "global",
+      "expect": {
+        "eq": true
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "ТЗ: без следов поддержек",
+      "acceptable": {
+        "eq": false
+      }
+    },
+    {
+      "id": "orientation",
+      "kind": "up_axis",
+      "expect": {
+        "axis": "+Z",
+        "tol_deg": 5
+      },
+      "weight": 4,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model): как в файле, стоит на лапах"
+    },
+    {
+      "id": "height_z",
+      "kind": "dimensions",
+      "expect": {
+        "size_z": 150.0,
+        "tol": 0.5
+      },
+      "weight": 2,
+      "confidence": "high",
+      "source": "геометрия модели (analyze_model) (габариты STL) + выбранная ориентация"
+    },
+    {
+      "id": "center_xy",
+      "kind": "center_xy",
+      "expect": {
+        "max_mm": 5
+      },
+      "acceptable": {
+        "max_mm": 60
+      },
+      "weight": 1,
+      "confidence": "low",
+      "source": "Cura ставит модель в центр стола; эталон, вероятно, тоже по центру"
+    }
+  ]
+}
